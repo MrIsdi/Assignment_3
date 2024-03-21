@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>Assignment 3</title>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS v5.2.0-beta1 -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"  integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+
+        <!-- Icon -->
+        <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+    </head>
+    <body style="background: #e0e0e0;">
+        <nav 
+            class="navbar navbar-expand-lg"
+            style="
+                box-shadow:  20px 20px 60px #bebebe,
+                            -20px -20px 60px #ffffff;
+                background: #e0e0e0;">
+            <div class="container-fluid">
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <i class="bx bx-chip fs-1"></i>
+                    <p class="ms-3 mb-0 fw-bold">Assignment 3</p>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+                    <div class="d-flex align-items-center">
+                        <i class='bx bxs-user-circle fs-1 me-3'></i>
+                        <div class="name">
+                            <p class="fw-bold mb-0">Muhammad Ridho Isdi</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+            <p class="mt-5 display-6 text-center fw-bold">Pemantauan Air dan Angin</p>
+            <div class="mb-5 row justify-content-evenly mt-5">
+                <div class="col-md-5">
+                    <div 
+                        class="suhu"
+                        style="
+                            padding: 20px;
+                            width: 100%;
+                            background: #e0e0e0;
+                            box-shadow:  20px 20px 60px #bebebe,
+                                        -20px -20px 60px #ffffff;
+                            border-radius: 20px;">
+                        <p class="fw-bold">Status Air:</p>
+                        <p class="fs-3 text-center fw-bold d-flex align-items-center justify-content-center">
+                            <i class='bx bxs-thermometer fs-1'></i><span>Air <span id="dataT"></span> Meter</span>
+                        </p>
+                        <p class="fw-bold h1 text-center" id="statusT">Danger</p>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div 
+                        class="lembab"
+                        style="
+                            padding: 20px;
+                            width: 100%;
+                            background: #e0e0e0;
+                            box-shadow:  20px 20px 60px #bebebe,
+                                        -20px -20px 60px #ffffff;
+                            border-radius: 20px;">
+                        <p class="fw-bold">Status Angin:</p>
+                        <p class="fs-3 text-center fw-bold d-flex align-items-center justify-content-center">
+                            <i class='bx bx-wind fs-1' ></i><span>Angin <span id="dataH"></span> meter/detik</span>
+                        </p>
+                        <p class="fw-bold h1 text-center" id="statusH">Danger</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            var dataT = document.getElementById("dataT");
+            var dataH = document.getElementById("dataH");
+            var statusT = document.getElementById("statusT");
+            var statusH = document.getElementById("statusH");
+
+            function getData() {
+                let xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        let cuaca = JSON.parse(this.responseText);
+                        dataT.innerHTML = cuaca.water
+                        dataH.innerHTML = cuaca.wind
+                        if(cuaca.water <= 5){
+                            statusT.innerHTML = "Aman"
+                        }else if(cuaca.water > 5 && cuaca.water <=8){
+                            statusT.innerHTML = "Siaga"
+                        }else{
+                            statusT.innerHTML = "Bahaya"
+                        }
+                        if(cuaca.wind <= 6){
+                            statusH.innerHTML = "Aman"
+                        }else if(cuaca.wind > 6 && cuaca.wind <= 15){
+                            statusH.innerHTML = "Siaga"
+                        }else{
+                            statusH.innerHTML = "Bahaya"
+                        }
+                    }
+                };
+                xhttp.open("GET", "http://localhost:8080/", true);
+                xhttp.send();
+            }
+            getData()
+        </script>
+
+        <!-- Bootstrap JavaScript Libraries -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
+    </body>
+</html>
